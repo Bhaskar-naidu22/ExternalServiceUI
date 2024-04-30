@@ -1,0 +1,45 @@
+{
+    "name": "External_Service_UI",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap-cloud-sdk/http-client": "^3.14.0",
+        "@sap-cloud-sdk/resilience": "^3.14.0",
+        "@sap/cds": "^7",
+        "@sap/cds-hana": "^2",
+        "express": "^4"
+    },
+    "devDependencies": {
+        "@cap-js/sqlite": "^1",
+        "@sap/cds-dk": "^7",
+        "@sap/ux-specification": "^1.120.9",
+        "rimraf": "^3.0.2"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "watch-salesorganisation": "cds watch --open salesorganisation/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy External_Service_UI --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    },
+    "cds": {
+        "requires": {
+            "API_SALESORGANIZATION_SRV": {
+                "kind": "odata-v2",
+                "model": "srv/external/API_SALESORGANIZATION_SRV",
+                "credentials": {
+                    "url": "https://sandbox.api.sap.com/s4hanacloud/sap/opu/odata/sap/API_SALESORGANIZATION_SRV",
+                    "headers": {
+                        "APIKey": "x4IRAR7GTvNufuN8iABRAqu1omqoWtBe"
+                    }
+                }
+            }
+        }
+    },
+    "sapux": [
+        "app/salesorganisation"
+    ]
+}
